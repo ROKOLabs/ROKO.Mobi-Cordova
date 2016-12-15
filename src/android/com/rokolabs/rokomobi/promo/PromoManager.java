@@ -3,6 +3,7 @@ package com.rokolabs.rokomobi.promo;
 import com.rokolabs.rokomobi.base.BasePlugin;
 import com.rokolabs.sdk.promo.ResponsePromo;
 import com.rokolabs.sdk.promo.RokoPromo;
+import com.rokolabs.sdk.promo.RokoPromoCodes;
 import com.rokolabs.sdk.promo.RokoPromoDeliveryType;
 
 import org.apache.cordova.CallbackContext;
@@ -14,6 +15,7 @@ public class PromoManager extends BasePlugin {
     private static final String loadPromo = "loadPromo";
     private static final String markPromoCodeAsUsed = "markPromoCodeAsUsed";
     private static final String promoCodeFromNotification = "promoCodeFromNotification";
+    private static final String loadUserPromoCodes = "loadUserPromoCodes";
 
     @Override
     public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -81,11 +83,38 @@ public class PromoManager extends BasePlugin {
                     try {
                         PromoCodeFromNotificationModel model = gson.fromJson(args.getJSONObject(0).toString(), PromoCodeFromNotificationModel.class);
                         JSONObject obj = new JSONObject();
-                        obj.put("promoCode",model.promoCode);
+                        obj.put("promoCode", model.promoCode);
                         callbackContext.success(obj);
-                    }catch (JSONException ex){
+                    } catch (JSONException ex) {
                         callbackContext.error("Parse error");
                     }
+                }
+            });
+            return true;
+        }
+        if (loadUserPromoCodes.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    RokoPromo.loadUserPromoCodes(true, new RokoPromo.CallbackPromoCodes() {
+                        @Override
+                        public void success(RokoPromoCodes rokoPromoCodes) {
+                            try {
+                                callbackContext.success(new JSONObject(gson.toJson(rokoPromoCodes)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void failure(RokoPromoCodes rokoPromoCodes) {
+                            try {
+                                callbackContext.error(new JSONObject(gson.toJson(rokoPromoCodes)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             });
             return true;
