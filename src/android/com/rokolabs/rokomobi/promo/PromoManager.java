@@ -3,7 +3,7 @@ package com.rokolabs.rokomobi.promo;
 import com.rokolabs.rokomobi.base.BasePlugin;
 import com.rokolabs.sdk.promo.ResponsePromo;
 import com.rokolabs.sdk.promo.RokoPromo;
-import com.rokolabs.sdk.promo.RokoPromoCodes;
+import com.rokolabs.sdk.promo.RokoPromoCode;
 import com.rokolabs.sdk.promo.RokoPromoDeliveryType;
 
 import org.apache.cordova.CallbackContext;
@@ -98,18 +98,18 @@ public class PromoManager extends BasePlugin {
                 public void run() {
                     RokoPromo.loadUserPromoCodes(true, new RokoPromo.CallbackPromoCodes() {
                         @Override
-                        public void success(RokoPromoCodes rokoPromoCodes) {
+                        public void success(List<RokoPromoCode> rokoPromoCodes) {
                             try {
-                                callbackContext.success(new JSONObject(gson.toJson(rokoPromoCodes)));
+                                callbackContext.success(new JSONArray(gson.toJson(rokoPromoCodes)));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
                         @Override
-                        public void failure(RokoPromoCodes rokoPromoCodes) {
+                        public void failure(String error) {
                             try {
-                                callbackContext.error(new JSONObject(gson.toJson(rokoPromoCodes)));
+                                callbackContext.error(error);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
