@@ -96,7 +96,7 @@ public class PromoManager extends BasePlugin {
             cordova.getThreadPool().execute(new Runnable() {
                 @Override
                 public void run() {
-                    RokoPromo.loadUserPromoCodes(true, new RokoPromo.CallbackPromoCodes() {
+                    RokoPromo.loadUserPromoCodes(new RokoPromo.CallbackPromoCodes() {
                         @Override
                         public void success(List<RokoPromoCode> rokoPromoCodes) {
                             try {
