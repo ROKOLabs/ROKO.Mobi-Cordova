@@ -11,6 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 public class PromoManager extends BasePlugin {
     private static final String loadPromo = "loadPromo";
     private static final String markPromoCodeAsUsed = "markPromoCodeAsUsed";
