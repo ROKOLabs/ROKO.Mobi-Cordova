@@ -110,11 +110,7 @@ public class PromoManager extends BasePlugin {
 
                         @Override
                         public void failure(String error) {
-                            try {
-                                callbackContext.error(error);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+                            callbackContext.error(error);
                         }
                     });
                 }
