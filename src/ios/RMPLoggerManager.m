@@ -21,7 +21,7 @@
     if (params && params[@"name"]) {
         NSString *eventName = params[@"name"];
         NSDictionary *parameters = [self dictionaryValue:params forKey:@"params"];
-        [[ROKOLogger sharedLogger] addEvent:eventName withParameters:parameters];
+        [ROKOLogger addEvent:eventName withParameters:parameters];
         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Done"];
     }
     

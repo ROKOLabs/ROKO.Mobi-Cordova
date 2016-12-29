@@ -3,91 +3,114 @@
 #import <ROKOMobi/ROKOMobi.h>
 #import "ROKOPromoDiscountItem+ROKOPromoDiscountItemMapper.h"
 #import "ROKOPromoCodeListItem+ROKOPromoCodeListItemMapper.h"
+#import "ROKOPromoCampaignInfo+ROKOPromoCampaignInfoMapper.h"
 
 NSString *const kPromoCodeKey = @"promoCode";
+NSString *const kCampaignIdKey = @"campaignId";
 NSString *const kValueOfPurchaseKey = @"valueOfPurchase";
 NSString *const kValueOfDiscountKey = @"valueOfDiscount";
 NSString *const kDeliveryTypeKey = @"deliveryType";
 
 @interface RMPPromoManager () {
-  
+	
 }
 @end
 
 @implementation RMPPromoManager
 
 - (void)pluginInitialize {
-  [super pluginInitialize];
+	[super pluginInitialize];
 }
 
 - (void)loadPromo:(CDVInvokedUrlCommand *)command {
-  [self parseCommand:command];
-  NSString *promoCode = command.arguments[0];
-  
-  if (promoCode) {
-    NSLog(@"load Promocode - %@", promoCode);
-    ROKOPromo *promo = [[ROKOPromo alloc] init];
-    __weak __typeof__(self) weakSelf = self;
-    
-    [promo loadPromoDiscountWithPromoCode:promoCode completionBlock:^(ROKOPromoDiscountItem *discount, NSError *error) {
-      if (error) {
-        [weakSelf handleError:error];
-      } else {
-        NSDictionary *representation = [EKSerializer serializeObject:discount withMapping:[ROKOPromoDiscountItem objectMapping]];
-        CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:representation];
-        [weakSelf.commandDelegate sendPluginResult:result callbackId:weakSelf.command.callbackId];
-      }
-    }];
-  }
-  
+	[self parseCommand:command];
+	NSString *promoCode = command.arguments[0];
+	
+	if (promoCode) {
+		NSLog(@"load Promocode - %@", promoCode);
+		ROKOPromo *promo = [[ROKOPromo alloc] init];
+		__weak __typeof__(self) weakSelf = self;
+		
+		[promo loadPromoDiscountWithPromoCode:promoCode completionBlock:^(ROKOPromoDiscountItem *discount, NSError *error) {
+			if (error) {
+				[weakSelf handleError:error];
+			} else {
+				NSDictionary *representation = [EKSerializer serializeObject:discount withMapping:[ROKOPromoDiscountItem objectMapping]];
+				CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:representation];
+				[weakSelf.commandDelegate sendPluginResult:result callbackId:weakSelf.command.callbackId];
+			}
+		}];
+	}
+	
 }
 
 - (void)markPromoCodeAsUsed:(CDVInvokedUrlCommand *)command {
-  [self parseCommand:command];
-  NSDictionary *params = command.arguments[0];
-  
-  if (params) {
-    __weak __typeof__(self) weakSelf = self;
-    
-    NSString *promoCode = params[kPromoCodeKey];
-    NSNumber *valueOfPurchase = params[kValueOfPurchaseKey];
-    NSNumber *valueOfDiscount = params[kValueOfDiscountKey];
-    NSNumber *deliveryType = params[kDeliveryTypeKey];
-    
-    ROKOPromo *promo = [[ROKOPromo alloc] init];
-    
-    if (promoCode) {
-      [promo markPromoCodeAsUsed:promoCode valueOfPurchase:valueOfPurchase valueOfDiscount:valueOfDiscount deliveryType:[deliveryType intValue] completionBlock:^(NSError *error) {
-        if (error) {
-          [weakSelf handleError:error];
-        } else {
-          CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OK"];
-          [weakSelf.commandDelegate sendPluginResult:result callbackId:weakSelf.command.callbackId];
-        }
-      }];
-    }
-  }
+	[self parseCommand:command];
+	NSDictionary *params = command.arguments[0];
+	
+	if (params) {
+		__weak __typeof__(self) weakSelf = self;
+		
+		NSString *promoCode = params[kPromoCodeKey];
+		NSNumber *valueOfPurchase = params[kValueOfPurchaseKey];
+		NSNumber *valueOfDiscount = params[kValueOfDiscountKey];
+		NSNumber *deliveryType = params[kDeliveryTypeKey];
+		
+		ROKOPromo *promo = [[ROKOPromo alloc] init];
+		
+		if (promoCode) {
+			[promo markPromoCodeAsUsed:promoCode valueOfPurchase:valueOfPurchase valueOfDiscount:valueOfDiscount deliveryType:[deliveryType intValue] completionBlock:^(NSError *error) {
+				if (error) {
+					[weakSelf handleError:error];
+				} else {
+					CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"OK"];
+					[weakSelf.commandDelegate sendPluginResult:result callbackId:weakSelf.command.callbackId];
+				}
+			}];
+		}
+	}
 }
 
 - (void)loadUserPromoCodes:(CDVInvokedUrlCommand *)command {
-  [self parseCommand:command];
-  __weak __typeof__(self) weakSelf = self;
-  ROKOPromo *promo = [[ROKOPromo alloc] init];
-  [promo loadUserPromoCodesWithCompletionBlock:^(NSArray<ROKOPromoCodeListItem *> * _Nullable promoCodes, NSError * _Nullable error) {
-    if (error) {
-      [weakSelf handleError:error];
-    } else {
-      NSMutableArray *promoCodeListItems = [[NSMutableArray alloc] init];
-      
-      for (ROKOPromoCodeListItem *item in promoCodes) {
-        NSDictionary *representation = [EKSerializer serializeObject:item withMapping:[ROKOPromoCodeListItem objectMapping]];
-        [promoCodeListItems addObject:representation];
-      }
-      
-      CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:promoCodeListItems];
-      [weakSelf.commandDelegate sendPluginResult:result callbackId:weakSelf.command.callbackId];
-    }
-  }];
+	[self parseCommand:command];
+	__weak __typeof__(self) weakSelf = self;
+	ROKOPromo *promo = [[ROKOPromo alloc] init];
+	[promo loadUserPromoCodesWithCompletionBlock:^(NSArray<ROKOPromoCodeListItem *> * _Nullable promoCodes, NSError * _Nullable error) {
+		if (error) {
+			[weakSelf handleError:error];
+		} else {
+			NSMutableArray *promoCodeListItems = [[NSMutableArray alloc] init];
+			
+			for (ROKOPromoCodeListItem *item in promoCodes) {
+				NSDictionary *representation = [EKSerializer serializeObject:item withMapping:[ROKOPromoCodeListItem objectMapping]];
+				[promoCodeListItems addObject:representation];
+			}
+			
+			CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:promoCodeListItems];
+			[weakSelf.commandDelegate sendPluginResult:result callbackId:weakSelf.command.callbackId];
+		}
+	}];
 }
 
+- (void)loadPromoCampaignInfo:(CDVInvokedUrlCommand *)command {
+	[self parseCommand:command];
+	NSDictionary *params = command.arguments[0];
+	
+	if (params) {
+		__weak __typeof__(self) weakSelf = self;
+		NSNumber *campaignId = params[kCampaignIdKey];
+		if (campaignId) {
+			ROKOPromo *promo = [[ROKOPromo alloc] init];
+			[promo loadPromoCampaignInfo: [campaignId intValue] completionBlock:^(ROKOPromoCampaignInfo * _Nullable info, NSError * _Nullable error) {
+				if (error) {
+					[weakSelf handleError:error];
+				} else {
+					NSDictionary *representation = [EKSerializer serializeObject:info withMapping:[ROKOPromoCampaignInfo objectMapping]];
+					CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:representation];
+					[weakSelf.commandDelegate sendPluginResult:result callbackId:weakSelf.command.callbackId];
+				}
+			}];
+		}
+	}
+}
 @end

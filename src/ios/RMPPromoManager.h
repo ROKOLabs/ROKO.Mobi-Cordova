@@ -6,5 +6,5 @@
 - (void)loadPromo:(CDVInvokedUrlCommand *)command;
 - (void)markPromoCodeAsUsed:(CDVInvokedUrlCommand *)command;
 - (void)loadUserPromoCodes:(CDVInvokedUrlCommand *)command;
-
+- (void)loadPromoCampaignInfo:(CDVInvokedUrlCommand *)command;
 @end
