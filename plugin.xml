@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.rokolabs.rokomobi"
-        version="0.0.25">
+        version="0.0.33">
 
   <name>RokoMobi</name>
 
@@ -208,6 +208,8 @@
     <source-file src="src/ios/Mappers/ROKOSessionInfo+ROKOSessionInfoMapper.m" target-dir="RokoMobi/Mappers"/>
     <header-file src="src/ios/Mappers/ROKOPromoCodeListItem+ROKOPromoCodeListItemMapper.h" target-dir="RokoMobi/Mappers"/>
     <source-file src="src/ios/Mappers/ROKOPromoCodeListItem+ROKOPromoCodeListItemMapper.m" target-dir="RokoMobi/Mappers"/>
+    <header-file src="src/ios/Mappers/ROKOPromoCampaignInfo+ROKOPromoCampaignInfoMapper.h" target-dir="RokoMobi/Mappers"/>
+    <source-file src="src/ios/Mappers/ROKOPromoCampaignInfo+ROKOPromoCampaignInfoMapper.m" target-dir="RokoMobi/Mappers"/>
 
     <header-file src="src/ios/EasyMapping/EasyMapping.h" target-dir="RokoMobi/EasyMapping"/>
     <header-file src="src/ios/EasyMapping/EKCoreDataImporter.h" target-dir="RokoMobi/EasyMapping"/>
