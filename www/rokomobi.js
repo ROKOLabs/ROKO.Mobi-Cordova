@@ -32,10 +32,6 @@ module.exports = {
     loadUserPromoCodes: function (param, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "PromoManager", "loadUserPromoCodes", [param]);
     },
-    // Param - campaignId, Success - array of objects: "promoCode", "active", "refInfo"
-    loadPromoCampaignInfo: function (param, successCallback, errorCallback) {
-        cordova.exec(successCallback, errorCallback, "PromoManager", "loadPromoCampaignInfo", [param]);
-    },
     // Param - Empty, Success - array of objects: "createDate", "updateDate", "value", "limit", "type", "canBeUsed"
     loadReferralDiscountsList: function (param, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "ReferralManager", "loadReferralDiscountsList", [param]);
