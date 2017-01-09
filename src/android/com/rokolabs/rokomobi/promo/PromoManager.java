@@ -18,6 +18,7 @@ public class PromoManager extends BasePlugin {
     private static final String markPromoCodeAsUsed = "markPromoCodeAsUsed";
     private static final String promoCodeFromNotification = "promoCodeFromNotification";
     private static final String loadUserPromoCodes = "loadUserPromoCodes";
+    private static final String loadPromoCampaignInfo = "loadPromoCampaignInfo";
 
     @Override
     public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -117,7 +118,15 @@ public class PromoManager extends BasePlugin {
             });
             return true;
         }
+        if (loadPromoCampaignInfo.equals(action)){
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    callbackContext.success(new JSONObject());
+                }
+            });
+            return true;
+        }
         return false;
     }
-
 }
