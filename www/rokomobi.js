@@ -52,13 +52,33 @@ module.exports = {
     activateDiscountWithCode: function (param, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "ReferralManager", "activateDiscountWithCode", [param]);
     },
-    // Param - "code", Sucess - "discountId", "referrerId"
+    // Param - "code", Sucсess - "discountId", "referrerId"
     completeDiscountWithCode: function (param, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "ReferralManager", "completeDiscountWithCode", [param]);
     },
-    // Param - Empty, Sucess - always
+    // Param - Empty, Sucсess - always
     inviteFriends: function (param, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "ReferralManager", "inviteFriends", [param]);
+    },
+    // Param - code, Sucсess - object "Referral program" 
+    loadInfo: function (param, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ReferralManager", "loadInfo", [param]);
+    },
+    // Param - discountId
+    redeemReferralDiscount: function (param, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ReferralManager", "redeemReferralDiscount", [param]);
+    },
+    // Param - discountId
+    issueReward: function (param, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ReferralManager", "issueReward", [param]);
+    },
+    // Param - onlyActive, unusedOnly, Success - array of objects: ["isActive", "createDate", "updateDate", "value", "limit", "type", "canBeUsed"]
+    loadReferralRewardList: function (param, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ReferralManager", "loadReferralRewardList", [param]);
+    },
+    // Param - objectId
+    redeemReferralReward: function (param, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "ReferralManager", "redeemReferralReward", [param]);
     },
     // Param - "userName", "password"
     login: function (param, successCallback, errorCallback) {
