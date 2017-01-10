@@ -214,6 +214,8 @@
     <source-file src="src/ios/Mappers/ROKOReferralProgramDefinition+ROKOReferralProgramDefinitionMapper.m" target-dir="RokoMobi/Mappers"/>
     <header-file src="src/ios/Mappers/ROKOReferralProgram+ROKOReferralProgramMapper.h" target-dir="RokoMobi/Mappers"/>
     <source-file src="src/ios/Mappers/ROKOReferralProgram+ROKOReferralProgramMapper.m" target-dir="RokoMobi/Mappers"/>
+    <header-file src="src/ios/Mappers/ROKOUserIcon+ROKOUserIconMapper.h" target-dir="RokoMobi/Mappers"/>
+    <source-file src="src/ios/Mappers/ROKOUserIcon+ROKOUserIconMapper.m" target-dir="RokoMobi/Mappers"/>
     <header-file src="src/ios/EasyMapping/EasyMapping.h" target-dir="RokoMobi/EasyMapping"/>
     <header-file src="src/ios/EasyMapping/EKCoreDataImporter.h" target-dir="RokoMobi/EasyMapping"/>
     <source-file src="src/ios/EasyMapping/EKCoreDataImporter.m" target-dir="RokoMobi/EasyMapping"/>
