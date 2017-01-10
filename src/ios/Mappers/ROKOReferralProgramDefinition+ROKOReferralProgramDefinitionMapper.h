@@ -9,6 +9,6 @@
 #import <ROKOMobi/ROKOMobi.h>
 #import "EasyMapping.h"
 
-@interface ROKOReferralProgramDefinition(ROKOReferralProgramDefinitionoMapper) <EKMappingProtocol>
+@interface ROKOReferralProgramDefinition(ROKOReferralProgramDefinitionMapper) <EKMappingProtocol>
 
 @end

@@ -14,6 +14,7 @@
 + (EKObjectMapping *)objectMapping {
   return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
       [mapping mapPropertiesFromArray:@[@"objectId", @"createDate", @"email", @"firstLoginTime", @"lastLoginTime", @"phone", @"photoFile", @"referralCode", @"updateDate", @"username", @"customProperties", @"systemProperties"]];
+      [mapping hasOne:[ROKOReferralProgram class] forKeyPath:@"referralProgram"];
   }];
 }
 
