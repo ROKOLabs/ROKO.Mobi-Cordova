@@ -13,7 +13,8 @@
 
 + (EKObjectMapping *)objectMapping {
   return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
-      [mapping mapPropertiesFromArray:@[@"objectId", @"createDate", @"email", @"firstLoginTime", @"lastLoginTime", @"phone", @"photoFile", @"referralCode", @"updateDate", @"username", @"customProperties", @"systemProperties"]];
+      [mapping mapPropertiesFromArray:@[@"objectId", @"createDate", @"email", @"firstLoginTime", @"lastLoginTime", @"phone", @"referralCode", @"updateDate", @"username", @"customProperties", @"systemProperties"]];
+      [mapping hasOne:[ROKOUserIcon class] forKeyPath:@"photoFile"];
       [mapping hasOne:[ROKOReferralProgram class] forKeyPath:@"referralProgram"];
   }];
 }
