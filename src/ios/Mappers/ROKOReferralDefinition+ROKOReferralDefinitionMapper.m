@@ -9,11 +9,11 @@
 #import "ROKOReferralDefinition+ROKOReferralDefinitionMapper.h"
 #import <Foundation/NSFormatter.h>
 
-@implementation ROKOReferralDefinition (ROKOReferralDefinitionmMapper)
+@implementation ROKOReferralDefinition (ROKOReferralDefinitionMapper)
 
 + (EKObjectMapping *)objectMapping {
   return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
-      [mapping mapPropertiesFromArray:@[@"value", @"enabled", @"canBeUsed"]];
+      [mapping mapPropertiesFromArray:@[@"value", @"enabled"]];
 
         NSDictionary *discountTypes = @{ @"ROKODiscountTypeUnspecified": @(ROKODiscountTypeUnspecified),
                                    @"ROKODiscountTypePercent": @(ROKODiscountTypePercent),
