@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.rokolabs.rokomobi"
-        version="0.0.42">
+        version="0.0.43">
 
   <name>RokoMobi</name>
 
@@ -82,6 +82,7 @@
     <hook type="before_compile" src="www/setupApplicationName.js"/>
     
     <framework src="com.android.support:appcompat-v7:23.4.0"/>
+    <framework src="com.android.support:recyclerview-v7:23.4.0"/>
     <framework src="com.google.code.gson:gson:2.7"/>
     <framework src="com.google.android.gms:play-services-gcm:9.0.1"/>
     <framework src="com.google.android.gms:play-services:9.0.1"/>
