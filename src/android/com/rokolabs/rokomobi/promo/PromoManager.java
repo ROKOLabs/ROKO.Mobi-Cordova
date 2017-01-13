@@ -1,6 +1,8 @@
 package com.rokolabs.rokomobi.promo;
 
 import com.rokolabs.rokomobi.base.BasePlugin;
+import com.rokolabs.sdk.http.Response;
+import com.rokolabs.sdk.promo.ResponseCampaignInfo;
 import com.rokolabs.sdk.promo.ResponsePromo;
 import com.rokolabs.sdk.promo.RokoPromo;
 import com.rokolabs.sdk.promo.RokoPromoCode;
@@ -122,7 +124,25 @@ public class PromoManager extends BasePlugin {
             cordova.getThreadPool().execute(new Runnable() {
                 @Override
                 public void run() {
-                    callbackContext.success(new JSONObject());
+                    try {
+                        RokoPromo.loadPromoCampaignInfo(args.getLong(0), new RokoPromo.CallbackLoadPromoCampaignInfo() {
+                            @Override
+                            public void success(ResponseCampaignInfo responseCampaignInfo) {
+                                try {
+                                    callbackContext.success(new JSONObject(gson.toJson(responseCampaignInfo)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void failure(Response response) {
+                                callbackContext.error("Error: " +response.body);
+                            }
+                        });
+                    } catch (JSONException error) {
+                        callbackContext.error(error.getMessage());
+                    }
                 }
             });
             return true;
