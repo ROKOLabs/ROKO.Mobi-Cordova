@@ -14,7 +14,7 @@
 + (EKObjectMapping *)objectMapping {
   return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         // Base properties
-        [mapping mapPropertiesFromArray:@[@"objectId", @"value", @"limit", @"canBeUsed"]];
+        [mapping mapPropertiesFromArray:@[@"objectId", @"value", @"limit", @"canBeUsed", @"isActive"]];
 
         NSDictionary *discountTypes = @{ @"ROKODiscountTypeUnspecified": @(ROKODiscountTypeUnspecified),
                                    @"ROKODiscountTypePercent": @(ROKODiscountTypePercent),
