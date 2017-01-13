@@ -169,6 +169,9 @@
       <feature name="PushManager">
         <param name="ios-package" value="RMPPushManager" />
       </feature>
+      <feature name="InstabotManager">
+        <param name="ios-package" value="RMPInstabotManager" />
+      </feature>      
     </config-file>
 
     <header-file src="src/ios/RMPHelper.h" target-dir="RokoMobi"/>
@@ -187,6 +190,8 @@
     <source-file src="src/ios/RMPPortalManager.m" target-dir="RokoMobi"/>
     <header-file src="src/ios/RMPPushManager.h" target-dir="RokoMobi"/>
     <source-file src="src/ios/RMPPushManager.m" target-dir="RokoMobi"/>
+    <header-file src="src/ios/RMPInstabotManager.h" target-dir="RokoMobi"/>
+    <source-file src="src/ios/RMPInstabotManager.m" target-dir="RokoMobi"/>
     <header-file src="src/ios/Mappers/ROKOLink+ROKOLinkMapper.h" target-dir="RokoMobi/Mappers"/>
     <source-file src="src/ios/Mappers/ROKOLink+ROKOLinkMapper.m" target-dir="RokoMobi/Mappers"/>
     <header-file src="src/ios/Mappers/ROKODiscountItem+ROKODiscountItemMapper.h" target-dir="RokoMobi/Mappers"/>

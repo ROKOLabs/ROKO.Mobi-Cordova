@@ -115,6 +115,10 @@ module.exports = {
     promoCodeFromNotification: function (param, successCallback, errorCallback) {
         cordova.exec(successCallback, errorCallback, "PushManager", "promoCodeFromNotification", [param]);
     },
+    // Param - conversationId, Success - Run bot dialog
+    loadConversation: function (param, successCallback, errorCallback) {
+        cordova.exec(successCallback, errorCallback, "InstabotManager", "loadConversation", [param]);
+    },
     ROKOLinkType: {
         ROKOLinkTypeManual: 0,
         ROKOLinkTypePromo: 1,
