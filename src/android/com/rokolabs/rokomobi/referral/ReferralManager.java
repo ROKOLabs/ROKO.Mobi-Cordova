@@ -298,7 +298,12 @@ public class ReferralManager extends BasePlugin {
                         RokoReferrals.redeemReferralReward(rewardId, new RokoReferrals.OnRedeemReferralReward() {
                             @Override
                             public void success(BaseResponse baseResponse) {
-
+                                try {
+                                    callbackContext.success(new JSONArray(new Gson().toJson(baseResponse)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    callbackContext.error("Parse error");
+                                }
                             }
 
                             @Override
@@ -325,3 +330,4 @@ public class ReferralManager extends BasePlugin {
         return false;
     }
 }
+
