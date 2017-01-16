@@ -1,10 +1,14 @@
 package com.rokolabs.rokomobi.referral;
 
+import com.google.gson.Gson;
 import com.rokolabs.rokomobi.base.BasePlugin;
 import com.rokolabs.sdk.base.BaseResponse;
+import com.rokolabs.sdk.http.Response;
 import com.rokolabs.sdk.referrals.ResponseActivatedDiscountsList;
 import com.rokolabs.sdk.referrals.ResponseCompletedDiscount;
 import com.rokolabs.sdk.referrals.ResponseDiscount;
+import com.rokolabs.sdk.referrals.ResponseGetReferralDiscountInfo;
+import com.rokolabs.sdk.referrals.ResponseGetReferralRewardList;
 import com.rokolabs.sdk.referrals.RokoReferrals;
 import com.rokolabs.sdk.referrals.invite.RokoInviteFriends;
 
@@ -25,6 +29,12 @@ public class ReferralManager extends BasePlugin {
     private static final String activateDiscountWithCode = "activateDiscountWithCode";
     private static final String completeDiscountWithCode = "completeDiscountWithCode";
     private static final String inviteFriends = "inviteFriends";
+
+    private static final String loadInfo = "loadInfo";
+    private static final String redeemReferralDiscount = "redeemReferralDiscount";
+    private static final String issueReward = "issueReward";
+    private static final String loadReferralRewardList = "loadReferralRewardList";
+    private static final String redeemReferralReward = "redeemReferralReward";
 
     @Override
     public boolean execute(String action, final JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -161,7 +171,143 @@ public class ReferralManager extends BasePlugin {
                             }
                         });
                     } catch (JSONException ex) {
-                        callbackContext.error("Parse erorr");
+                        callbackContext.error("Parse error");
+                    }
+                }
+            });
+            return true;
+        }
+        if (loadInfo.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        String code = args.getString(0);
+                        RokoReferrals.loadInfo(code, true, true, new RokoReferrals.OnGetReferralDiscountInfo() {
+                            @Override
+                            public void success(ResponseGetReferralDiscountInfo responseGetReferralDiscountInfo) {
+                                try {
+                                    callbackContext.success(new JSONObject(new Gson().toJson(responseGetReferralDiscountInfo)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    callbackContext.error("Parse error");
+                                }
+                            }
+
+                            @Override
+                            public void failure(Response response) {
+                                callbackContext.error(response.body);
+                            }
+                        }
+                        );
+                    } catch (JSONException ex) {
+                        callbackContext.error("Parse error");
+                    }
+                }
+            });
+            return true;
+        }
+        if (redeemReferralDiscount.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        long discountId = args.getLong(0);
+                        RokoReferrals.redeemReferralDiscount(discountId, true, new RokoReferrals.OnRedeemReferralDiscount() {
+                            @Override
+                            public void success(BaseResponse response) {
+                                try {
+                                    callbackContext.success(new JSONObject(new Gson().toJson(response)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    callbackContext.error("Parse error");
+                                }
+                            }
+
+                            @Override
+                            public void failure(Response response) {
+                                callbackContext.error(response.body);
+                            }
+                        });
+                    } catch (JSONException ex) {
+                        callbackContext.error("Parse error");
+                    }
+                }
+            });
+            return true;
+        }
+        if (issueReward.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        long discountId = args.getLong(0);
+                        RokoReferrals.issueReferralReward(discountId, new RokoReferrals.OnIssueReferralReward() {
+                            @Override
+                            public void success(BaseResponse response) {
+                                try {
+                                    callbackContext.success(new JSONObject(new Gson().toJson(response)));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    callbackContext.error("Parse error");
+                                }
+                            }
+
+                            @Override
+                            public void failure(Response response) {
+                                callbackContext.error(response.body);
+                            }
+                        });
+                    } catch (JSONException ex) {
+                        callbackContext.error("Parse error");
+                    }
+                }
+            });
+            return true;
+        }
+        if (loadReferralRewardList.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    RokoReferrals.loadReferralRewardList(true, true, new RokoReferrals.OnGetReferralRewardList(){
+                        @Override
+                        public void success(ResponseGetReferralRewardList responseGetReferralRewardList) {
+                            try {
+                                callbackContext.success(new JSONArray(new Gson().toJson(responseGetReferralRewardList.data)));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                callbackContext.error("Parse error");
+                            }
+                        }
+
+                        @Override
+                        public void failure(Response response) {
+                            callbackContext.error(response.body);
+                        }
+                    });
+                }
+            });
+            return true;
+        }
+        if (redeemReferralReward.equals(action)) {
+            cordova.getThreadPool().execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        long rewardId = args.getLong(0);
+                        RokoReferrals.redeemReferralReward(rewardId, new RokoReferrals.OnRedeemReferralReward() {
+                            @Override
+                            public void success(BaseResponse baseResponse) {
+
+                            }
+
+                            @Override
+                            public void failure(Response response) {
+                                callbackContext.error(response.body);
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
                 }
             });
