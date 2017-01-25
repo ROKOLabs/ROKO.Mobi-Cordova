@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-rokomobi",
-  "version": "0.0.49",
+  "version": "0.0.50",
   "description": "Plugin for RokoMobi portal",
   "cordova": {
     "id": "com.rokolabs.rokomobi",
