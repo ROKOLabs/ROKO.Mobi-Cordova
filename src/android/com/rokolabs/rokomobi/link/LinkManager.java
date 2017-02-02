@@ -3,6 +3,7 @@ package com.rokolabs.rokomobi.link;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.rokolabs.rokomobi.base.BasePlugin;
 import com.rokolabs.sdk.http.Response;
@@ -36,8 +37,10 @@ public class LinkManager extends BasePlugin {
     public static void sendExtras(ResponseVanityLink extras) {
         if (extras != null) {
             if (gWebView != null) {
+                Log.d("LinkManager", "Activity: "+ gWebView.getContext().getClass().getSimpleName());
                 sendJavascript(extras);
             } else {
+                Log.d("LinkManager", "gCachedExtras");
                 gCachedExtras = extras;
             }
         }
@@ -45,6 +48,7 @@ public class LinkManager extends BasePlugin {
 
 
     public static void sendJavascript(ResponseVanityLink response) {
+        Log.d("LinkManager", "sendJavascript");
         String script = "javascript:" + "onHandleDeepLink" + "(" + gson.toJson(response.data) + ")";
         if (gWebView != null) {
             gWebView.sendJavascript(script);
@@ -52,12 +56,17 @@ public class LinkManager extends BasePlugin {
     }
 
     public static void init(CordovaWebView webView) {
-        gWebView = webView;
     }
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
+        Log.d("LinkManager", "initialize");
+        gWebView = webView;
+        if(gCachedExtras != null) {
+            sendJavascript(gCachedExtras);
+            gCachedExtras = null;
+        }
     }
 
     @Override
@@ -140,4 +149,12 @@ public class LinkManager extends BasePlugin {
         }
         return false;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("LinkManager", "onDestroy");
+        gWebView = null;
+    }
 }
+
