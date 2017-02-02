@@ -48,10 +48,15 @@ public class LinkManager extends BasePlugin {
 
 
     public static void sendJavascript(ResponseVanityLink response) {
-        Log.d("LinkManager", "sendJavascript");
-        String script = "javascript:" + "onHandleDeepLink" + "(" + gson.toJson(response.data) + ")";
+        final String script = "javascript:" + "onHandleDeepLink" + "(" + gson.toJson(response.data) + ")";
+        Log.d("LinkManager", "sendJavascript: " + script);
         if (gWebView != null) {
-            gWebView.sendJavascript(script);
+            gWebView.getView().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    gWebView.sendJavascript(script);
+                }
+            }, 200);
         }
     }
 
@@ -157,4 +162,5 @@ public class LinkManager extends BasePlugin {
         gWebView = null;
     }
 }
+
 
