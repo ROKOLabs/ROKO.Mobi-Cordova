@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.rokolabs.rokomobi"
-        version="0.0.51">
+        version="0.0.52">
 
   <name>RokoMobi</name>
 
@@ -28,6 +28,7 @@
         </feature>
         <feature name="LinkManager">
             <param name="android-package" value="com.rokolabs.rokomobi.link.LinkManager"/>
+            <param name="onload" value="true" />
         </feature>
         <feature name="ShareManager">
             <param name="android-package" value="com.rokolabs.rokomobi.share.ShareManager"/>
