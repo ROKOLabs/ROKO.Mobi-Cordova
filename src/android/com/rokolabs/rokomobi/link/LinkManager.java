@@ -2,11 +2,11 @@ package com.rokolabs.rokomobi.link;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.rokolabs.rokomobi.base.BasePlugin;
-import com.rokolabs.sdk.http.Response;
 import com.rokolabs.sdk.links.ResponseCreateLink;
 import com.rokolabs.sdk.links.ResponseVanityLink;
 import com.rokolabs.sdk.links.RokoLinkType;
@@ -21,14 +21,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class LinkManager extends BasePlugin {
     private static final String CREATE_LINK = "createLink";
     private static final String HANDLE_DEEP_LINK = "handleDeepLink";
+    public static final String ON_PAGE_STARTED = "onPageStarted";
+    public static final String ON_PAGE_FINISHED = "onPageFinished";
     private static CordovaWebView gWebView;
     private static ResponseVanityLink gCachedExtras;
+    private static boolean isReady;
 
     public static boolean isActive() {
         return gWebView != null;
@@ -48,15 +50,19 @@ public class LinkManager extends BasePlugin {
 
 
     public static void sendJavascript(ResponseVanityLink response) {
-        final String script = "javascript:" + "onHandleDeepLink" + "(" + gson.toJson(response.data) + ")";
-        Log.d("LinkManager", "sendJavascript: " + script);
+        if(!isReady){
+            gCachedExtras = response;
+            return;
+        }
+        final String script = "javascript:document.addEventListener('deviceready',function(){console.log(\"onHandleDeepLink\");onHandleDeepLink(" + gson.toJson(response.data) + ")})";
         if (gWebView != null) {
-            gWebView.getView().postDelayed(new Runnable() {
+            new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {
                     gWebView.sendJavascript(script);
+                    Log.d("LinkManager", "sendJavascript: " + script);
                 }
-            }, 200);
+            });
         }
     }
 
@@ -68,7 +74,7 @@ public class LinkManager extends BasePlugin {
         super.initialize(cordova, webView);
         Log.d("LinkManager", "initialize");
         gWebView = webView;
-        if(gCachedExtras != null) {
+        if(gCachedExtras != null && isReady) {
             sendJavascript(gCachedExtras);
             gCachedExtras = null;
         }
@@ -156,11 +162,24 @@ public class LinkManager extends BasePlugin {
     }
 
     @Override
+    public Object onMessage(String id, Object data) {
+        Log.d("LinkManager", "message: "+id);
+        if(ON_PAGE_STARTED.equals(id)){
+            isReady = false;
+        } else if(ON_PAGE_FINISHED.equals(id)){
+            isReady = true;
+            if(gCachedExtras != null) {
+                sendJavascript(gCachedExtras);
+                gCachedExtras = null;
+            }
+        }
+        return super.onMessage(id, data);
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d("LinkManager", "onDestroy");
         gWebView = null;
     }
 }
-
-
