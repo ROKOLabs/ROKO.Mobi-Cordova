@@ -31,37 +31,41 @@ NSString *const kShareLinkIdKey = @"linkId";
     [self share:command andUI:YES];
 }
 
+- (void)parameters:(NSDictionary *)parameters forShareManager:(ROKOShare *)shareManager {
+	if (parameters) {
+		if (parameters[@"text"]) {
+			shareManager.text = parameters[@"text"];
+		}
+		
+		if (parameters[kContentTitleKey]) {
+			shareManager.contentTitle = parameters[kContentTitleKey];
+		}
+		
+		id url = parameters[@"contentURL"];
+		
+		if (url && url != [NSNull null] && [url isKindOfClass:[NSURL class]]) {
+			shareManager.contentURL = parameters[@"contentURL"];
+		}
+		
+		if (parameters[@"ShareChannelTypeFacebook"]) {
+			[shareManager setText:parameters[@"ShareChannelTypeFacebook"] forShareChannel:ROKOShareChannelTypeFacebook];
+		}
+		
+		if (parameters[@"ShareChannelTypeTwitter"]) {
+			[shareManager setText:parameters[@"ShareChannelTypeTwitter"] forShareChannel:ROKOShareChannelTypeTwitter];
+		}
+		
+		if (parameters[@"ShareChannelTypeMessage"]) {
+			[shareManager setText:parameters[@"ShareChannelTypeMessage"] forShareChannel:ROKOShareChannelTypeMessage];
+		}
+	}
+}
+
 - (void)share:(CDVInvokedUrlCommand *)command andUI:(BOOL)usingUI {
     [self parseCommand:command];
     NSDictionary *params = command.arguments[0];
-    
-    if (params) {
-        if (params[@"text"]) {
-            _shareManager.text = params[@"text"];
-        }
-        
-        if (params[kContentTitleKey]) {
-            _shareManager.contentTitle = params[kContentTitleKey];
-        }
-        
-        id url = params[@"contentURL"];
-        
-        if (url && url != [NSNull null] && [url isKindOfClass:[NSURL class]]) {
-            _shareManager.contentURL = params[@"contentURL"];
-        }
-        
-        if (params[@"ShareChannelTypeFacebook"]) {
-            [_shareManager setText:params[@"ShareChannelTypeFacebook"] forShareChannel:ROKOShareChannelTypeFacebook];
-        }
-        
-        if (params[@"ShareChannelTypeTwitter"]) {
-            [_shareManager setText:params[@"ShareChannelTypeTwitter"] forShareChannel:ROKOShareChannelTypeTwitter];
-        }
-        
-        if (params[@"ShareChannelTypeMessage"]) {
-            [_shareManager setText:params[@"ShareChannelTypeMessage"] forShareChannel:ROKOShareChannelTypeMessage];
-        }
-        
+	
+	if (params) {
         if (usingUI) {
             NSString *contentIdString = params[kContentIdKey];
             
@@ -70,13 +74,14 @@ NSString *const kShareLinkIdKey = @"linkId";
             }
             
             ROKOShareViewController *controller = [ROKOShareViewController buildControllerWithContentId: contentIdString];
-            controller.shareManager = _shareManager;
+			[self parameters:params forShareManager:controller.shareManager];
             if (params[kDisplayMessageKey]) {
                 controller.displayMessage = params[kDisplayMessageKey];
             }
 
             [self.viewController presentViewController:controller animated:YES completion:nil];
         } else {
+			[self parameters:params forShareManager:_shareManager];
             ROKOShareChannelType channelType = ROKOShareChannelTypeUnknown;
             NSString *channelTypeString = params[kChannelTypeKey];
             
