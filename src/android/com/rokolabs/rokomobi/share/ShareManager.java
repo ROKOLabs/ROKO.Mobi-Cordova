@@ -3,7 +3,6 @@ package com.rokolabs.rokomobi.share;
 import com.rokolabs.rokomobi.base.BasePlugin;
 import com.rokolabs.sdk.share.RokoShare;
 import com.rokolabs.sdk.share.RokoShareChannelType;
-import com.rokolabs.sdk.share.RokoShareViewController;
 
 import org.apache.cordova.CallbackContext;
 import org.json.JSONArray;
@@ -26,7 +25,7 @@ public class ShareManager extends BasePlugin {
                         if(TextUtils.isEmpty(share.contentId)){
                             callbackContext.error("ContentId field should not be empty");
                         }
-                        RokoShare rokoShare = new RokoShare(cordova.getActivity(), share.contentId);
+                        RokoShare rokoShare = new RokoShare(share.contentId);
                         rokoShare.text = share.text;
                         rokoShare.contentURL = share.contentURL;
                         rokoShare.contentId = share.contentId;
