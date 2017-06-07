@@ -1,6 +1,6 @@
-# Cordova RokoMobi Plugin
+# Cordova ROKO Mobi Plugin
 
-Plugin allows to integrate with RokoMobi Portal
+Plugin allows to integrate with ROKO Mobi Portal
 
 ## Prerequisites
 
@@ -32,7 +32,7 @@ Edit `www/js/index.js` and add the following code inside `onDeviceReady`
         alert("Success")
     }
     var failure = function(error) {
-        alert("Error calling Roko Plugin" + error);
+        alert("Error calling ROKO Mobi Plugin" + error);
     }
     var dictionary = {userName: "username"}
     rokomobi.setUser(dictionary, success, failure);
@@ -49,4 +49,4 @@ Run the code
 
 ## More Info
 
-For more information about RokoMobi integration [the documentation](http://docs.roko.mobi/docs/cordova)
+For more information about ROKO Mobi integration [the documentation](http://docs.roko.mobi/docs/cordova)
