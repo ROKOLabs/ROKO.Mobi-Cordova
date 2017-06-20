@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.rokolabs.rokomobi"
-        version="0.0.66">
+        version="0.0.67">
 
   <name>RokoMobi</name>
 
@@ -23,8 +23,9 @@
         <feature name="PortalManager">
             <param name="android-package" value="com.rokolabs.rokomobi.PortalManager"/>
         </feature>
-        <feature name="PushManager">
+        <feature name="PushPlugin">
             <param name="android-package" value="com.rokolabs.rokomobi.push.PushPlugin"/>
+            <param name="onload" value="true" />
         </feature>
         <feature name="LinkManager">
             <param name="android-package" value="com.rokolabs.rokomobi.link.LinkManager"/>

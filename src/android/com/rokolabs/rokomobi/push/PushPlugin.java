@@ -19,13 +19,24 @@ import org.json.JSONObject;
 import java.util.Iterator;
 
 public class PushPlugin extends BasePlugin {
+    private static final String CREATE_LINK = "createLink";
+    private static final String HANDLE_DEEP_LINK = "handleDeepLink";
+    public static final String ON_PAGE_STARTED = "onPageStarted";
+    public static final String ON_PAGE_FINISHED = "onPageFinished";
+    private static boolean isReady;
+
     private static CordovaWebView gWebView;
-    private static Bundle gCachedExtras = null;
+    private static JSONObject gCachedExtras = null;
     private static boolean gForeground = false;
 
     public static void sendJavascript(JSONObject _json) {
+        if(!isReady){
+            gCachedExtras = _json;
+            return;
+        }
+
         try {
-            String script = "javascript:" + "onRecievePushNotification" + "(" + _json.getJSONObject("payload").toString() + ")";
+            String script = "javascript:document.addEventListener('deviceready',function(){" + "onRecievePushNotification" + "(" + _json.getJSONObject("payload").toString() + ")})";
             if (gWebView != null) {
                 gWebView.sendJavascript(script);
             }
@@ -39,7 +50,7 @@ public class PushPlugin extends BasePlugin {
             if (gWebView != null) {
                 sendJavascript(convertBundleToJson(extras));
             } else {
-                gCachedExtras = extras;
+                gCachedExtras = convertBundleToJson(extras);
             }
         }
     }
@@ -47,6 +58,10 @@ public class PushPlugin extends BasePlugin {
     public static void init(String gcmSenderID, CordovaWebView webView) {
         RokoPush.start(gcmSenderID);
         gWebView = webView;
+        if(gCachedExtras != null && isReady) {
+            sendJavascript(gCachedExtras);
+            gCachedExtras = null;
+        }
     }
 
     private static JSONObject convertBundleToJson(Bundle extras) {
@@ -115,8 +130,6 @@ public class PushPlugin extends BasePlugin {
         return gWebView != null;
     }
 
-
-
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
         super.initialize(cordova, webView);
@@ -136,4 +149,28 @@ public class PushPlugin extends BasePlugin {
         super.onResume(multitasking);
         gForeground = true;
     }
+
+    @Override
+    public Object onMessage(String id, Object data) {
+        Log.d("PushPlugin", "message: "+id);
+        if(ON_PAGE_STARTED.equals(id)){
+            isReady = false;
+        } else if(ON_PAGE_FINISHED.equals(id)){
+            isReady = true;
+            if(gCachedExtras != null) {
+                sendJavascript(gCachedExtras);
+                gCachedExtras = null;
+            }
+        }
+        return super.onMessage(id, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("PushPlugin", "onDestroy");
+        gWebView = null;
+    }
 }
+
+
