@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
         id="com.rokolabs.rokomobi"
-        version="0.0.69">
+        version="0.0.70">
 
   <name>RokoMobi</name>
 
@@ -161,6 +161,7 @@
       </feature>
       <feature name="PushManager">
         <param name="ios-package" value="RMPPushManager" />
+		<param name="onload" value="true" />
       </feature>
       <feature name="InstabotManager">
         <param name="ios-package" value="RMPInstabotManager" />
