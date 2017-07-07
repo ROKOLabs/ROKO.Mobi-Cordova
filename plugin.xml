@@ -170,6 +170,9 @@
       <feature name="InstabotManager">
         <param name="ios-package" value="RMPInstabotManager" />
       </feature>
+      <feature name="SettingsManager">
+        <param name="ios-package" value="RMPSettingsManager" />
+      </feature>
     </config-file>
 
     <header-file src="src/ios/RMPHelper.h" target-dir="RokoMobi"/>
@@ -263,6 +266,9 @@
 
     <header-file src="src/ios/EasyMapping/NSDateFormatter+EasyMappingAdditions.h" target-dir="RokoMobi/EasyMapping"/>
     <source-file src="src/ios/EasyMapping/NSDateFormatter+EasyMappingAdditions.m" target-dir="RokoMobi/EasyMapping"/>
+
+    <header-file src="src/ios/RMPSettingsManager.h" target-dir="RokoMobi/" />
+    <source-file src="src/ios/RMPSettingsManager.m" target-dir="RokoMobi" />
 
     <framework src="src/ios/Frameworks/ROKOMobi.framework" custom="true"/>
     <resource-file src="src/ios/Frameworks/ROKOMobi.framework/ROKOMobiResources.bundle"/>
